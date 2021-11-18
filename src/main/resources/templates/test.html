@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Questions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Questions</h1>
+
+	<table>
+		<tr>
+			<th>Question</th>
+
+		</tr>
+		
+		<tr th:each="query : ${queries}">
+			<td th:text="${query.question}"></td>
+		</tr>
+	</table>
+	<form th:object="${answer}" th:action="@{saveanswer}" action="#" method="post">
+	
+	<input type="text" id="html" th:field="*{query}"  name="fav_language">
+	<label for="html">answer</label>
+	
+	
+	
+	<br>
+	<input type="submit" value="Submit">
+	</form>
+</body>
+</html>
