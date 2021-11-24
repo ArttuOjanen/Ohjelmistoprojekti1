@@ -1,7 +1,5 @@
 package com.example.Ohjelmistoprojekti1;
 
-
-
 import org.springframework.boot.CommandLineRunner;
 
 import org.springframework.boot.SpringApplication;
@@ -14,8 +12,6 @@ import com.example.Ohjelmistoprojekti1.domain.QueryRepository;
 import com.example.Ohjelmistoprojekti1.domain.QuestionRepository;
 import com.example.Ohjelmistoprojekti1.domain.Question;
 import com.example.Ohjelmistoprojekti1.domain.Answer;
-
-
 
 @SpringBootApplication
 public class Ohjelmistoprojekti1Application {
@@ -30,12 +26,16 @@ public class Ohjelmistoprojekti1Application {
 	public CommandLineRunner queryDemo(QueryRepository queryRepository, QuestionRepository questionRepository, AnswerRepository arepository) {
 		return (args) -> {
 		
+			
 		Query query = new Query();
-		//query.setName("Kysely");
+		query.setName("Kysely");
 		queryRepository.save(query);
 		
 			
-			
+		Question question1 = new Question();
+		question1.setQuery(query);
+		question1.setQuestion("Radiokysymys");
+		questionRepository.save(question1);
 
 		};
 	}

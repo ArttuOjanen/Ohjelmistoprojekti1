@@ -33,5 +33,7 @@ public class Query {
 	private List<Question> questions = new ArrayList<>();
 	
 	private String name;
+
+	
 	
 }

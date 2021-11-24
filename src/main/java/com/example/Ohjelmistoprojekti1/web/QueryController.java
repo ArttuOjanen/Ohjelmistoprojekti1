@@ -17,6 +17,8 @@ import com.example.Ohjelmistoprojekti1.domain.Answer;
 import com.example.Ohjelmistoprojekti1.domain.AnswerRepository;
 import com.example.Ohjelmistoprojekti1.domain.Query;
 import com.example.Ohjelmistoprojekti1.domain.QueryRepository;
+import com.example.Ohjelmistoprojekti1.domain.Question;
+import com.example.Ohjelmistoprojekti1.domain.QuestionRepository;
 
 @Controller
 public class QueryController {
@@ -26,6 +28,9 @@ public class QueryController {
 	
 	@Autowired
 	private AnswerRepository arepository;
+	
+	@Autowired
+	private QuestionRepository questrepo;
 
 	@CrossOrigin
 	@GetMapping("/test")
@@ -39,7 +44,7 @@ public class QueryController {
 	}
 	
 	@RequestMapping(value="/querylist")
-    public String studentList(Model model) {	
+    public String questionList(Model model) {	
         model.addAttribute("queries", qrepository.findAll());
         return "test";
     }
@@ -54,4 +59,13 @@ public class QueryController {
 		return (List<Answer>) arepository.findAll();
 	}
 	
+	@GetMapping("/test")
+	public @ResponseBody List<Question> questions() {
+		return (List<Question>) questrepo.findAll();
+	}
+	
+	@PostMapping("/test")
+	Question newQuestion(@RequestBody Question newQuestion) {
+		return questrepo.save(newQuestion);
+	}
 }
