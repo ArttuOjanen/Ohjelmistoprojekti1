@@ -6,18 +6,17 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 
 function QueryList() {
     
     const [questions, setQuestions] = useState([]);
-    const [answer, setAnswer] = useState({
-      name: '',
-      radio: ''
-    });
-    //const [name, setName] = useState('');
+    const [radio, setRadio] = useState('');
+    const [name, setName] = useState('');
     const [viesti, setViesti] = useState('');
+    const [open, setOpen] = React.useState(false);
 
-    //const axios = require('axios');
+    const axios = require('axios');
 
     const fetchQuestions = () => {
       fetch('http://localhost:8080/api/queries')
@@ -30,40 +29,42 @@ function QueryList() {
       fetchQuestions();
    }, []);
 
-   const handleSave = () => {
-     sendAnswers(answer);
-   }
-
+   const handleClose = () => {
+    setOpen(false);
+};
     
 
-    const sendAnswers = newAnswer => {
-      fetch('http://localhost:8080/api/answers',
-      {
-          method: 'POST',
-          headers: {'Content-type':'application/json'},
-          body: JSON.stringify(newAnswer)
-      }
-      )
-      .then(response => response.json())
-      .then(data => setAnswer(data))
-      .then(_ => fetchQuestions())
-      .catch(err => console.error(err))
+const lisaa = (e) => {
+    
+  e.preventDefault();
+  const formData = {
+      'name': document.getElementById('name').value,
+     // 'radio': document.getElementById('radio').value
+  }
+
+  axios.post('http://localhost:8080/api/answers', formData)
+      .then(response => {
+          if (response.status === 200) {
+              setName('');
+             // setRadio('');
+              setViesti('Vastaukset lähetetty');
+          } else {
+              setViesti('Vastauksia ei lähetetty');
+          }
+      })
   }
 
    const handleChange = (e) => {
-     setAnswer({...answer, [e.target.name]: e.target.value});
+     setName( e.target.value);
    }
   
     return(
-        <div>
+          <div className="form">
         <form method = 'post'>
-          <label>{questions.map((q) => (
-            <tr key={q}>
-              <td>{q.questions}</td>
-            </tr>
-          ))}</label>
+          <h1>Kysely</h1>
+           
           <label htmlFor='nimi'>Nimi </label> <br />
-            <TextField type='text' id ='name' value={answer.name} name='name' onChange={handleChange} /><br /><br />
+            <TextField type='text' id ='name' value={name} name='name' onChange={handleChange} /><br /><br />
 
         <FormControl component="fieldset">
           <FormLabel component="legend">Radiokysymys</FormLabel>
@@ -76,9 +77,11 @@ function QueryList() {
         <FormControlLabel value="no" id="no" name="no" control={<Radio />} label="Ei" />
           </RadioGroup>
         </FormControl>
-        <Button type='submit' variant="contained" onClick={handleSave}>Lisää </Button>
+        <div className="button">
+        <Button type='submit' variant="contained" onClick={(e) => lisaa(e)}>Lähetä </Button>
+        </div>
       </form>
-      <p style= {{color:'red', fontSize:'24px'}}>{ viesti }</p>
+      <p style= {{color:'red', fontSize:'24px'}}>{ viesti }</p> 
         </div>
     );
 }
