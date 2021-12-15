@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.example.kysely.domain.Answer;
+import com.example.kysely.domain.AnswerRepository;
 import com.example.kysely.domain.Query;
 import com.example.kysely.domain.QueryRepository;
 
@@ -17,6 +19,9 @@ public class KyselyApplication {
 	
 	@Autowired
 	private QueryRepository queryrepo;
+	
+	@Autowired
+	private AnswerRepository arepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(KyselyApplication.class, args);
@@ -32,6 +37,7 @@ public class KyselyApplication {
       return args -> {
         
     	  queryrepo.save(new Query("Avoin kysymys"));
+    	  arepo.save(new Answer("a"));
     	  queryrepo.save(new Query("Radiokysymys"));
       };
     }
